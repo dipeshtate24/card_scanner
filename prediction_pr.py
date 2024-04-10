@@ -1,17 +1,15 @@
-import numpy as np
 import pandas as pd
 import cv2
 import pytesseract
-from glob import glob
 import spacy
 import re
 import string
 import warnings
 from io import StringIO 
-# import import_ipynb
 warnings.filterwarnings('ignore')
 
-### Load NER model
+
+# Load NER model
 model_ner = spacy.load("output/model-best/")
 
 
@@ -24,52 +22,53 @@ def clean_text(txt):
     text = text.lower()
     removewhitespace = text.translate(tableWhiteSpace)
     removepunctuation = removewhitespace.translate(tablePunctuation)
-    
+
     return str(removepunctuation)
 
-        
-def parser(text,label):
+
+def parser(text, label):
     if label == "PHONE":
         text = text.lower()
-        text = re.sub(r"\D","",text)
-    
+        text = re.sub(r"\D", "", text)
+
     elif label == "EMAIL":
         text = text.lower()
         allow_special_char = "@_.\-"
-        text = re.sub(r"[^A-Za-z0-9{} ]".format(allow_special_char),"",text)
-        
+        text = re.sub(r"[^A-Za-z0-9{} ]".format(allow_special_char), "", text)
+
     elif label == "WEB":
         text = text.lower()
         allow_special_char = ":/.%#\-"
-        text = re.sub(r"[^A-Za-z0-9{} ]".format(allow_special_char),"",text)
-        
+        text = re.sub(r"[^A-Za-z0-9{} ]".format(allow_special_char), "", text)
+
     elif label in ("I-NAME"):
         text = text.lower()
         allow_special_char = ":/.%#-"
-        text = re.sub(r"[^a-z ]","",text)
+        text = re.sub(r"[^a-z ]", "", text)
         text = text.title()
-    
+
     elif label in ("B-NAME"):
         text = text.lower()
         allow_special_char = ":/.%#-"
-        text = re.sub(r"[^a-z ]","",text)
+        text = re.sub(r"[^a-z ]", "", text)
         text = text.title()
-        
+
     elif label in ("DES"):
         text = text.lower()
         allow_special_char = ":/.%#-"
-        text = re.sub(r"[^a-z ]","",text)
+        text = re.sub(r"[^a-z ]", "", text)
         text = text.title()
-        
+
     elif label == "ORG":
         text = text.lower()
         allow_special_char = ":/.%#-"
-        text = re.sub(r"[^a-z0-9 ]","",text)
+        text = re.sub(r"[^a-z0-9 ]", "", text)
         text = text.title()
-        
+
     return text
 
-def getPredictions(image):
+
+def getpredictions(image):
     
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     text_data = pytesseract.image_to_data(gray)
@@ -95,30 +94,29 @@ def getPredictions(image):
     
     dataframe_tokens = pd.DataFrame(docjson["tokens"])
     
-    dataframe_tokens["token"] = dataframe_tokens[["start", "end"]].apply(lambda x:doc_text[x[0]:x[1]],axis=1)
+    dataframe_tokens["token"] = dataframe_tokens[["start", "end"]].apply(lambda x: doc_text[x[0]:x[1]],axis=1)
 
     pd.DataFrame(docjson["ents"])
-    
+
+
     pd.DataFrame(docjson["ents"])[["start", "label"]]
-    
-    
+
     doc_ents = pd.DataFrame(docjson["ents"])[["start", "label"]]
+
     dataframe_tokens = pd.merge(dataframe_tokens, doc_ents, how="left", on="start")
 
-    
     dataframe_tokens.fillna('O', inplace = True)
 
-    df_clean['conf']=df_clean['conf'].astype(int)
+    df_clean['conf'] = df_clean['conf'].astype(int)
 
-    
     #join label to df_clean dataframe
     df_clean['text'].apply(lambda x: len(x)+1)
     
     # join label to df_clean dataframe
     df_clean["text"].apply(lambda x: len(x)+1).cumsum() - 1
-    
-    
+
     df_clean["end"] = df_clean["text"].apply(lambda x: len(x)+1).cumsum() - 1
+
     df_clean["start"] = df_clean[["text", "end"]].apply(lambda x: x[1] - len(x[0]), axis=1)
 
     # to get correct start position

@@ -11,9 +11,8 @@ import mysql.connector
 from pdf2image import convert_from_path
 from PIL import Image
 import prediction_pr as pred
+import Final_document_scanner as scanner
 from Final_document_scanner import document_scanner
-# import matplotlib.pyplot as plt
-# import re
 
 app = Flask(__name__)
 
@@ -62,7 +61,56 @@ def homepage():
 
             filename = secure_filename(image.filename)
             image.save(os.path.join(image_folder, filename))
-            return render_template('home.html')
+
+            # Get the absolute path of the image folder
+            image_path = os.path.abspath(image_folder)
+
+            # Get the absolute path of the upload folder
+            upload_path = os.path.abspath(upload_folder)
+
+            # Get the list of files already in the upload folder
+            existing_files = os.listdir(upload_path)
+
+            image_counter = 0
+
+            # Loop through each file in the image folder
+            for filename in os.listdir(image_path):
+                # Split the filename and extension
+                name, extension = os.path.splitext(filename)
+                file_extension = extension.lower()
+
+                # If the file is a PDF, convert it to images
+                if file_extension == '.pdf':
+                    pdf_path = os.path.join(image_path, filename)
+                    images = convert_from_path(pdf_path)
+                    for image in images:
+                        while f'{image_counter:03d}.jpg' in existing_files:
+                            image_counter += 1
+                        image_path = os.path.join(upload_path, f'{image_counter:03d}.jpg')
+                        image.save(image_path)
+                        image_counter += 1
+
+                # If the file is an image, save it directly
+                elif file_extension in {'.jpg', '.jpeg', '.png'}:
+                    while f'{image_counter:03d}.jpg' in existing_files:
+                        image_counter += 1
+                    full_image_path = os.path.join(image_path, filename)
+                    print(full_image_path)
+
+                    sharpened1 = scanner.document_scanner(full_image_path)
+
+                    image_save_path = os.path.join(upload_path, f'{image_counter:03d}.jpg')
+                    cv2.imwrite(image_save_path, sharpened1)
+                    image_counter += 1
+
+                # we take list of image present in folder
+                upload_list = os.listdir(upload_path)
+
+                # Get the most recent image file
+                if upload_list:
+                    latest_upload_image = max(upload_list)
+                    upload_url = url_for('get_file', filename=latest_upload_image)
+                    return render_template('home.html', upload_url=upload_url)
 
     # return render_template('first_main_page.html')
     return render_template('home.html')
@@ -72,109 +120,104 @@ def homepage():
 def get_file(filename):
     return send_from_directory(upload_folder, filename)
 
-
-@app.route('/extract', methods=['POST', 'GET'])
-def extract():
-        # abspath is used to complete path of the file in the system.
-
-        image_path = os.path.abspath(image_folder)
-
-        # Get the absolute path of the upload folder
-        upload_path = os.path.abspath(upload_folder)
-
-        # Get the list of files in the folder
-        file_list = os.listdir(image_path)
-
-        image_counter = 0
-
-        for i, filename in enumerate(file_list):
-            a = filename.rsplit('.', 1)
-            file_extension = a[1].lower()
-
-            if file_extension == 'pdf':
-                images_path = os.path.join(image_path, filename)
-                images = convert_from_path(images_path)
-                for j, image in enumerate(images):
-                    image_path = os.path.join(upload_path, f'{image_counter:03d}.jpg')
-                    image.save(image_path)
-                    image_counter += 1
-
-
-            elif file_extension in {'jpg', 'jpeg', 'png'}:
-
-                # Create the full path to the image file
-
-                full_image_path = os.path.join(image_path, filename)
-
-                # Load the image
-
-                image = Image.open(full_image_path)
-
-                # Convert and save to jpg
-
-                new_image_path = os.path.join(upload_path, f'{image_counter:03d}.jpg')
-
-                image.convert('RGB').save(new_image_path)
-
-                image_counter += 1
-
-        upload_path = os.path.abspath(upload_folder)
-
-        upload_list = os.listdir(upload_path)
-
-        # Get the most recent image file
-        if upload_list:
-            # Create a list of tuples containing (filename, modification time)
-            file_mod_times = [(file, os.path.getmtime(os.path.join(upload_path, file))) for file in upload_list]
-            # Sort the list based on modification time in descending order
-            file_mod_times.sort(key=lambda x: x[1], reverse=True)
-
-            # Iterate through the sorted list
-            for filename, _ in file_mod_times:
-                upload_url = url_for('image_file', filename=filename)
-                return render_template('home.html', upload_url=upload_url)
-
-        return render_template('home.html')
-
-
-# Define the route to get the processed image
-@app.route('/image_file/<filename>')
-def image_file(filename):
-    return send_from_directory(upload_folder, filename)
+#
+# ###pending loop in not working properly and create repreate image also add doc_scanner
+# @app.route('/extract', methods=['POST', 'GET'])
+# def extract():
+#     # Get the absolute path of the image folder
+#     image_path = os.path.abspath(image_folder)
+#
+#     # Get the absolute path of the upload folder
+#     upload_path = os.path.abspath(upload_folder)
+#
+#     # Get the list of files already in the upload folder
+#     existing_files = os.listdir(upload_path)
+#
+#     image_counter = 0
+#
+#     # Loop through each file in the image folder
+#     for filename in os.listdir(image_path):
+#         # Split the filename and extension
+#         name, extension = os.path.splitext(filename)
+#         file_extension = extension.lower()
+#
+#         # If the file is a PDF, convert it to images
+#         if file_extension == '.pdf':
+#             pdf_path = os.path.join(image_path, filename)
+#             images = convert_from_path(pdf_path)
+#             for image in images:
+#                 while f'{image_counter:03d}.jpg' in existing_files:
+#                     image_counter += 1
+#                 image_path = os.path.join(upload_path, f'{image_counter:03d}.jpg')
+#                 image.save(image_path)
+#                 image_counter += 1
+#
+#         # If the file is an image, save it directly
+#         elif file_extension in {'.jpg', '.jpeg', '.png'}:
+#             while f'{image_counter:03d}.jpg' in existing_files:
+#                 image_counter += 1
+#             full_image_path = os.path.join(image_path, filename)
+#             image = Image.open(full_image_path)
+#             new_image_path = os.path.join(upload_path, f'{image_counter:03d}.jpg')
+#             image.convert('RGB').save(new_image_path)
+#             image_counter += 1
+#
+#         # we take list of image present in folder
+#         upload_list = os.listdir(upload_path)
+#
+#         # Get the most recent image file
+#         if upload_list:
+#             latest_upload_image = max(upload_list)
+#             upload_url = url_for('image_file', filename=latest_upload_image)
+#             return render_template('home.html', upload_url=upload_url)
+#
+#         return render_template('home.html')
+#
+#
+# # Define the route to get the processed image
+# @app.route('/image_file/<filename>')
+# def image_file(filename):
+#     return send_from_directory(upload_folder, filename)
 
 
 @app.route('/fetch', methods=['POST', 'GET'])
 def fetch():
-    upload_path = os.path.abspath(upload_folder)
-    image_list = os.listdir(upload_path)
+    if request.method == 'POST':
+        # Assuming you have the necessary imports and variables
+        upload_path = os.path.abspath(upload_folder)
+        image_list = os.listdir(upload_path)
 
-    table = {"First Name": [], "Last Name": [], "Designation": [], "Mobile Number": [], "Email": [], "Website": []}
+        table = {"First Name": [], "Last Name": [], "Designation": [], "Mobile Number": [], "Email": [], "Website": []}
 
-    if image_list:
-        file_mod_times = [(file, os.path.getmtime(os.path.join(upload_path, file))) for file in image_list]
-        # Sort the list based on modification time
-        file_mod_times.sort(key=lambda x: x[1], reverse=True)
-        latest_image = file_mod_times[0][0]
-        file = os.path.join(upload_path, latest_image)
+        # if image_list:
+        file = os.path.join(upload_path, max(image_list))
+        print(file)
         img = cv2.imread(file)
-        entities = pred.getPredictions(img)
+        entities = pred.getpredictions(img)
 
-        table["First Name"].append(entities["First-NAME"])
-        table["Last Name"].append(entities["Last-NAME"])
-        table["Website"].append(entities["WEB"])
-        table["Mobile Number"].append(entities['PHONE'])
-        table["Designation"].append(entities['DESG'])
+        # Update table with extracted information
+        table["First Name"].append(entities.get("First-NAME", ""))
+        table["Last Name"].append(entities.get("Last-NAME", ""))
+        table["Website"].append(entities.get("WEB", ""))
+        table["Mobile Number"].append(entities.get("PHONE", ""))
+        table["Designation"].append(entities.get("DESG", ""))
 
-    # Assuming you have only one record from the image (based on your implementation)
-    first_name = table["First Name"][0] if table["First Name"] else ""
-    last_name = table["Last Name"][0] if table["Last Name"] else ""
-    designation = table["Designation"][0] if table["Designation"] else ""
-    mobile_no = table["Mobile Number"][0] if table["Mobile Number"] else ""
-    email = table["Email"][0] if table["Email"] else ""
-    website = table["Website"][0] if table["Website"] else ""
+        # Extracting values from table
+        first_name = ' '.join(table["First Name"][0]) if table["First Name"] else ""
+        last_name = ' '.join(table["Last Name"][0]) if table["Last Name"] else ""
+        designation = ' '.join(table["Designation"][0]) if table["Designation"] else ""
+        mobile_no = ' '.join(table["Mobile Number"][0]) if table["Mobile Number"] else ""
+        email = ' '.join(table["Email"][0]) if table["Email"] else ""
+        website = ' '.join(table["Website"][0]) if table["Website"] else ""
 
-    return render_template('home.html', first_name=first_name, last_name=last_name, designation=designation,
-                           mobile_no=mobile_no, email=email, website=website)
+        print(first_name, last_name, designation, mobile_no, email, website)
+        # Render the template with extracted values
+        return render_template('home.html', first_name=first_name, last_name=last_name, designation=designation,
+                                   mobile_no=mobile_no, email=email, website=website)
+
+    # Render the template without extracted values if no form submitted or GET request
+    return render_template('home.html', first_name="", last_name="", designation="", mobile_no="", email="", website="")
+
     # return jsonify({
     #     "First Name": first_name,
     #     "Last Name": last_name,
