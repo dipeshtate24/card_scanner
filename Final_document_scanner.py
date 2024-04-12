@@ -31,7 +31,7 @@ def resize_image(img):
 
 
 def document_scanner(image_paths):
-    global image_counter  # Declare image_counter as global
+    # global image_counter  # Declare image_counter as global
 
     # original image path
     original_img = cv2.imread(image_paths)
