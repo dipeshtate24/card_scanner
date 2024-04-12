@@ -138,7 +138,7 @@ def get_file(filename):
     return send_from_directory(upload_folder, filename)
 
 #
-# ###pending loop in not working properly and create repreate image also add doc_scanner
+# ###pending loop in not working properly and create repeat image also add doc_scanner
 # @app.route('/extract', methods=['POST', 'GET'])
 # def extract():
 #     # Get the absolute path of the image folder
@@ -233,7 +233,8 @@ def fetch():
                                mobile_no=mobile_no, email=email, website=website)
 
     # Render the template without extracted values if no form submitted or GET request
-    # return render_template('home.html', first_name="", last_name="", designation="", mobile_no="", email="", website="")
+    # return render_template('home.html', first_name="", last_name="", designation="",
+    # mobile_no="", email="", website="")
 
     # return jsonify({
     #     "First Name": first_name,
@@ -347,8 +348,8 @@ def update():
         email = request.form["email"]
         website = request.form["website"]
         cursor = mysql_connection.cursor()
-        ud = """UPDATE visitingcard_details SET First_name = %s, Last_name = %s, Designation = %s, Mobile_No = %s, Email =
-        %s, Website = %s WHERE id = %s"""
+        ud = """UPDATE visitingcard_details SET First_name = %s, Last_name = %s, Designation = %s, Mobile_No = %s, 
+            Email = %s, Website = %s WHERE id = %s"""
         cursor.execute(ud, (first_name, last_name, designation, mobile_no, email, website, id))
         mysql_connection.commit()
         flash("update data successfully")
