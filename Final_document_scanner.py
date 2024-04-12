@@ -5,11 +5,11 @@ import numpy as np
 from imutils.perspective import four_point_transform
 
 # # Define the directory where you want to save the images
-upload_directory = 'C:/Users/Dipesh/PycharmProjects/pythonProject2/Visiting_card_NLP/Upload'
+# upload_directory = 'C:/Users/Dipesh/PycharmProjects/pythonProject2/Visiting_card_NLP/Upload'
 
-image_counter = 0
+# image_counter = 0
 
-existing_files = os.listdir(upload_directory)
+# existing_files = os.listdir(upload_directory)
 
 
 def resize_image(img):
