@@ -16,18 +16,18 @@ def resize_image(img):
     # shape of image
     width, height = img.shape[:2]
 
-    # Define a standard width
-    target_width = 1000
-
     # resize the image
-    if width > target_width:
-        # calculate new height based on aspect ratio
-        height = int((target_width / width) * height)
-        resized_img = cv2.resize(img, (target_width, height))
+    if width > 2000:
+        width = 500
+        # get width and height
+        h, w, c = img.shape
+        height = int((h / w) * width)
+        size = (width, height)
+        image_resize = cv2.resize(img, (width, height))
     else:
-        resized_img = img
+        image_resize = img
 
-    return resized_img
+    return image_resize
 
 
 def document_scanner(image_paths):
@@ -84,9 +84,9 @@ def document_scanner(image_paths):
 
             gaussian_blur = cv2.GaussianBlur(wrap_img, (7, 7), 2)
 
-            sharpened1 = cv2.addWeighted(wrap_img, 1.5, gaussian_blur, -0.5, 0)
+            sharpened = cv2.addWeighted(wrap_img, 1.5, gaussian_blur, -0.5, 0)
 
-            return sharpened1
+            return sharpened
             # while f'{image_counter:03d}.jpg' in existing_files:
             #     image_counter += 1
             #

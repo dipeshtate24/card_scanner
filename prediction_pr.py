@@ -98,8 +98,7 @@ def getpredictions(image):
 
     pd.DataFrame(docjson["ents"])
 
-
-    pd.DataFrame(docjson["ents"])[["start", "label"]]
+    # pd.DataFrame(docjson["ents"])[["start", "label"]]
 
     doc_ents = pd.DataFrame(docjson["ents"])[["start", "label"]]
 
@@ -109,7 +108,8 @@ def getpredictions(image):
 
     df_clean['conf'] = df_clean['conf'].astype(int)
 
-    #join label to df_clean dataframe
+
+    # join label to df_clean dataframe
     df_clean['text'].apply(lambda x: len(x)+1)
     
     # join label to df_clean dataframe
@@ -146,7 +146,7 @@ def getpredictions(image):
                 if previous != label_tag:
                     entities[label_tag].append(text)
                 else:
-                    if label_tag in ("ORG", "DESG","PHONE"):
+                    if label_tag in ("ORG", "DESG", "PHONE"):
                         entities[label_tag][-1] = entities[label_tag][-1] + " " + text
                     else:
                         entities[label_tag][-1] = entities[label_tag][-1] + text

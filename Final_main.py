@@ -1,18 +1,13 @@
 from flask import Flask, render_template, request, url_for, flash, redirect, send_from_directory, jsonify
-from flask_mysqldb import MySQL
 from werkzeug.utils import secure_filename
 import cv2
-# import pandas as pd
-# import numpy as np
-import pytesseract
 import os
-import re
+import glob as glob
 import mysql.connector
 from pdf2image import convert_from_path
-from PIL import Image
 import prediction_pr as pred
 import Final_document_scanner as scanner
-from Final_document_scanner import document_scanner
+
 
 app = Flask(__name__)
 
@@ -59,8 +54,20 @@ def homepage():
                 print("That image extension is not allowed")
                 return redirect(request.url)
 
+            # Get the absolute path of the upload folder
+            images_path = os.path.abspath(image_folder)
+
+            # Get the list of files already in the upload folder
+            image_files = os.listdir(images_path)
+
+            file_count = 0
+            while f'{file_count:03d}.jpg' in image_files:
+                file_count += 1
+            # Inside the loop (assuming it's a loop where you process multiple images)
             filename = secure_filename(image.filename)
-            image.save(os.path.join(image_folder, filename))
+            filename, extension = os.path.splitext(filename)
+            image.save(os.path.join(image_folder, f'{file_count:03d}{extension}'))
+            file_count += 1  # Increment the file_count after saving each image
 
             # Get the absolute path of the image folder
             image_path = os.path.abspath(image_folder)
@@ -72,6 +79,9 @@ def homepage():
             existing_files = os.listdir(upload_path)
 
             image_counter = 0
+
+            ts = 0
+            found = None
 
             # Loop through each file in the image folder
             for filename in os.listdir(image_path):
@@ -94,13 +104,20 @@ def homepage():
                 elif file_extension in {'.jpg', '.jpeg', '.png'}:
                     while f'{image_counter:03d}.jpg' in existing_files:
                         image_counter += 1
-                    full_image_path = os.path.join(image_path, filename)
-                    print(full_image_path)
 
-                    sharpened1 = scanner.document_scanner(full_image_path)
+                    for file_name in glob.glob(os.path.join(image_path, filename)):
+                        fts = os.path.getmtime(file_name)
+                        if fts > ts:
+                            ts = fts
+                            found = file_name
+                    print(found)
+                    # full_image_path = os.path.join(image_path, filename)
+                    # print(full_image_path)
+
+                    sharpened = scanner.document_scanner(found)
 
                     image_save_path = os.path.join(upload_path, f'{image_counter:03d}.jpg')
-                    cv2.imwrite(image_save_path, sharpened1)
+                    cv2.imwrite(image_save_path, sharpened)
                     image_counter += 1
 
                 # we take list of image present in folder
@@ -185,22 +202,22 @@ def fetch():
     if request.method == 'POST':
         # Assuming you have the necessary imports and variables
         upload_path = os.path.abspath(upload_folder)
-        image_list = os.listdir(upload_path)
-
+        images_list = os.listdir(upload_path)
+        # print(images_list)
         table = {"First Name": [], "Last Name": [], "Designation": [], "Mobile Number": [], "Email": [], "Website": []}
 
-        # if image_list:
-        file = os.path.join(upload_path, max(image_list))
-        print(file)
-        img = cv2.imread(file)
-        entities = pred.getpredictions(img)
+        if images_list:
+            file = os.path.join(upload_path, max(images_list))
+            # print(file)
+            img = cv2.imread(file)
+            entities = pred.getpredictions(img)
 
-        # Update table with extracted information
-        table["First Name"].append(entities.get("First-NAME", ""))
-        table["Last Name"].append(entities.get("Last-NAME", ""))
-        table["Website"].append(entities.get("WEB", ""))
-        table["Mobile Number"].append(entities.get("PHONE", ""))
-        table["Designation"].append(entities.get("DESG", ""))
+            # Update table with extracted information
+            table["First Name"].append(entities.get("First-NAME", ""))
+            table["Last Name"].append(entities.get("Last-NAME", ""))
+            table["Website"].append(entities.get("WEB", ""))
+            table["Mobile Number"].append(entities.get("PHONE", ""))
+            table["Designation"].append(entities.get("DESG", ""))
 
         # Extracting values from table
         first_name = ' '.join(table["First Name"][0]) if table["First Name"] else ""
@@ -213,10 +230,10 @@ def fetch():
         print(first_name, last_name, designation, mobile_no, email, website)
         # Render the template with extracted values
         return render_template('home.html', first_name=first_name, last_name=last_name, designation=designation,
-                                   mobile_no=mobile_no, email=email, website=website)
+                               mobile_no=mobile_no, email=email, website=website)
 
     # Render the template without extracted values if no form submitted or GET request
-    return render_template('home.html', first_name="", last_name="", designation="", mobile_no="", email="", website="")
+    # return render_template('home.html', first_name="", last_name="", designation="", mobile_no="", email="", website="")
 
     # return jsonify({
     #     "First Name": first_name,
