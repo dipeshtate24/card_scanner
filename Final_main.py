@@ -348,8 +348,7 @@ def update():
         email = request.form["email"]
         website = request.form["website"]
         cursor = mysql_connection.cursor()
-        ud = """UPDATE visitingcard_details SET First_name = %s, Last_name = %s, Designation = %s, Mobile_No = %s, 
-            Email = %s, Website = %s WHERE id = %s"""
+        ud = """UPDATE visitingcard_details SET First_name = %s, Last_name = %s, Designation = %s, Mobile_No = %s,  Email = %s, Website = %s WHERE id = %s"""
         cursor.execute(ud, (first_name, last_name, designation, mobile_no, email, website, id))
         mysql_connection.commit()
         flash("update data successfully")
