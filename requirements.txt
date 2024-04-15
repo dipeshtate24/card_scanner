@@ -113,6 +113,7 @@ platformdirs==4.2.0
 preshed==3.0.9
 prompt-toolkit==3.0.43
 protobuf==4.23.4
+psycopg2==2.9.9
 pure-eval==0.2.2
 pyarrow==15.0.0
 pyasn1==0.5.1
