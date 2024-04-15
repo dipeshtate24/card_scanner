@@ -3,20 +3,24 @@ from werkzeug.utils import secure_filename
 import cv2
 import os
 import glob as glob
-import mysql.connector
+import psycopg2
 from pdf2image import convert_from_path
 import prediction_pr as pred
 import Final_document_scanner as scanner
-
+import re
+from werkzeug.security import generate_password_hash, check_password_hash
+if os.path.exists("env.py"): import env
 
 app = Flask(__name__)
 
-mysql_connection = mysql.connector.connect(
-                host='localhost',
-                user='root',
-                password='',
-                database='crud'
-)
+#postgresql database values
+DATABASE_URL = 'postgres://root:iY2puGlcWGz8QMOe7NdICb6SJb1VDmWc@dpg-cod5k6a0si5c738pp810-a.oregon-postgres.render.com/visitingcard_details_4eui'
+
+conn = psycopg2.connect(DATABASE_URL)
+
+cur = conn.cursor()
+cur.execute('''CREATE TABLE IF NOT EXISTS visitingcard_data(id serial PRIMARY KEY, first_name varchar(255), last_name varchar(255), 
+designation varchar(255), mobile_no INT, email varchar(255), website varchar(255));''')
 
 app.secret_key = "my_secret_key"
 
@@ -61,7 +65,7 @@ def homepage():
             image_files = os.listdir(images_path)
 
             file_count = 0
-            while f'{file_count:03d}.jpg' in image_files:
+            while any(f'{file_count:03d}{ext}' in image_files for ext in ('.jpg', '.png', '.jpeg', 'pdf')):
                 file_count += 1
             # Inside the loop (assuming it's a loop where you process multiple images)
             filename = secure_filename(image.filename)
@@ -232,9 +236,9 @@ def fetch():
         return render_template('home.html', first_name=first_name, last_name=last_name, designation=designation,
                                mobile_no=mobile_no, email=email, website=website)
 
-    # Render the template without extracted values if no form submitted or GET request
+    # # Render the template without extracted values if no form submitted or GET request
     # return render_template('home.html', first_name="", last_name="", designation="",
-    # mobile_no="", email="", website="")
+    #                         mobile_no="", email="", website="")
 
     # return jsonify({
     #     "First Name": first_name,
@@ -252,23 +256,23 @@ def save():
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         designation = request.form['designation']
-        mobile_no = request.form['mobile_no']
+        mobile_no =  re.sub(r'\s+', '', request.form['mobile_no'])
         email = request.form['email']
         website = request.form['website']
 
         # Insert the data into the MySQL database
-        cursor = mysql_connection.cursor()
-        add_data = ("INSERT INTO visitingcard_details (first_name, last_name, designation, mobile_no, email, website) "
+        cursor = conn.cursor()
+        add_data = ("INSERT INTO visitingcard_data (first_name, last_name, designation, mobile_no, email, website) "
                     "VALUES (%s, %s, %s, %s, %s, %s)")
         cursor.execute(add_data, (first_name, last_name, designation, mobile_no, email, website))
-        mysql_connection.commit()
+        conn.commit()
         # return 'data successfully store'
         return redirect(url_for('index'))  # Redirect to the fetch route after saving the data
 
 
 @app.route('/index', methods=['POST', 'GET'])
 def index():
-    cur = mysql_connection.cursor()
+    cur = conn.cursor()
     # id = "SELECT id FROM person_details ORDER BY id"
     # cur.execute(id)
     # id_num = [row[0] for row in cur.fetchall()]
@@ -291,7 +295,7 @@ def index():
     #         if i == id_num[x]:
     #             return 'unsccessful'
     # return 'successful'
-    tab = "SELECT * FROM visitingcard_details"
+    tab = "SELECT * FROM visitingcard_data"
     cur.execute(tab)
     data = cur.fetchall()
     return render_template('New.html', visitingcard_details=data)
@@ -328,8 +332,8 @@ def index():
 #
 @app.route('/edit/<string:id>', methods=['GET'])
 def edit(id):
-    cursor = mysql_connection.cursor()
-    ed = "SELECT * FROM visitingcard_details WHERE id = %s"
+    cursor = conn.cursor()
+    ed = "SELECT * FROM visitingcard_data WHERE id = %s"
     cursor.execute(ed, (id,))
     data = cursor.fetchall()
     # print(data)
@@ -347,20 +351,21 @@ def update():
         mobile_no = request.form["mobile_no"]
         email = request.form["email"]
         website = request.form["website"]
-        cursor = mysql_connection.cursor()
-        ud = """UPDATE visitingcard_details SET First_name = %s, Last_name = %s, Designation = %s, Mobile_No = %s,  Email = %s, Website = %s WHERE id = %s"""
+        cursor = conn.cursor()
+        ud = """UPDATE visitingcard_data SET First_name = %s, Last_name = %s, Designation = %s, Mobile_No = %s,
+                Email = %s, Website = %s WHERE id = %s"""
         cursor.execute(ud, (first_name, last_name, designation, mobile_no, email, website, id))
-        mysql_connection.commit()
+        conn.commit()
         flash("update data successfully")
         return redirect(url_for('index'))
 
 
 @app.route('/delete/<string:id>')
 def delete(id):
-    cursor = mysql_connection.cursor()
-    dl = "DELETE FROM visitingcard_details WHERE id=%s "
+    cursor = conn.cursor()
+    dl = "DELETE FROM visitingcard_data WHERE id=%s "
     cursor.execute(dl, (id,))
-    mysql_connection.commit()
+    conn.commit()
     flash("remove row from table successfully")
     return redirect(url_for('index'))
 
