@@ -4,15 +4,17 @@ Installing via pip:
 Check the [Pytesseract] package page for more information.
 Indented code 
 '''
-pip install pytesseract
+`pip install pytesseract
+`
 '''
+
 Or if you have git installed:
 '''
-pip install -U git+https://github.com/madmaze/pytesseract.git
+`pip install -U git+https://github.com/madmaze/pytesseract.git`
 '''
 
 Installing from source:
 '''
-git clone https://github.com/madmaze/pytesseract.git
-cd pytesseract && pip install -U .											
+`git clone https://github.com/madmaze/pytesseract.git
+cd pytesseract && pip install -U .	`										
 '''
