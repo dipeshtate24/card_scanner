@@ -13,9 +13,9 @@ pip install pytesseract
 Or, if you have git installed:
 ```bash
 pip install -U git+https://github.com/madmaze/pytesseract.git
-Installing from source
-````
+```
 
+Installing from source
 If you prefer to install from source, you can clone the repository and install it using pip:
 ```bash
 git clone https://github.com/madmaze/pytesseract.git cd pytesseract && pip install -U
