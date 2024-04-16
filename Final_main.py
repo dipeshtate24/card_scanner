@@ -24,7 +24,9 @@ designation varchar(255), mobile_no INT, email varchar(255), website varchar(255
 
 app.secret_key = "my_secret_key"
 
-
+# Set the path to the Tesseract executable
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Adjust the path as necessary
+ 
 image_folder = "Image"
 upload_folder = "Upload"
 allowed_extension = {'jpeg', 'jpg', 'png', 'pdf'}
