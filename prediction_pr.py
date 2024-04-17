@@ -1,4 +1,5 @@
 sudo apt-get install tesseract-ocr
+pip install pytesseract
 import pandas as pd
 import cv2
 import pytesseract
