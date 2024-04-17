@@ -1,4 +1,3 @@
-pip install pytesseract
 import pandas as pd
 import cv2
 import pytesseract
@@ -10,7 +9,7 @@ from io import StringIO
 warnings.filterwarnings('ignore')
 
 # Set the path to the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Adjust the path as necessary
+pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'  # Adjust the path as necessary
 
 # Load NER model
 model_ner = spacy.load("output/model-best/")
