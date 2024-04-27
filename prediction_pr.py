@@ -9,10 +9,13 @@ import os
 from io import StringIO 
 warnings.filterwarnings('ignore')
 
-# Get the Tesseract path from the environment variable
-tesseract_path = os.environ.get(r'C:\Users\Dipesh\AppData\Local\Tesseract-OCR')
-# Set the Tesseract path for Pytesseract
-pytesseract.pytesseract.tesseract_cmd = tesseract_path
+# # Get the Tesseract path from the environment variable
+# tesseract_path = os.environ.get(r'C:\Users\Dipesh\AppData\Local\Tesseract-OCR')
+# # Set the Tesseract path for Pytesseract
+# pytesseract.pytesseract.tesseract_cmd = tesseract_path
+
+pytesseract.pytesseract.tesseract_cmd = "/app/.apt/usr/bin/tesseract"
+
 
 # Load NER model
 model_ner = spacy.load("output/model-best/")
