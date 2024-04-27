@@ -8,22 +8,29 @@ from pdf2image import convert_from_path
 import prediction_pr as pred
 import Final_document_scanner as scanner
 import re
-from werkzeug.security import generate_password_hash, check_password_hash
-if os.path.exists("env.py"): import env
+# from werkzeug.security import generate_password_hash, check_password_hash
+# if os.path.exists("env.py"): import env
 
 app = Flask(__name__)
 
-#postgresql database values
-DATABASE_URL = 'postgres://root:iY2puGlcWGz8QMOe7NdICb6SJb1VDmWc@dpg-cod5k6a0si5c738pp810-a.oregon-postgres.render.com/visitingcard_details_4eui'
+# postgresql database values
+DATABASE_URL = ('postgres://root:iY2puGlcWGz8QMOe7NdICb6SJb1VDmWc@dpg-cod5k6a0si5c738pp810-a.oregon-postgres.render'
+                '.com/visitingcard_details_4eui')
 
 conn = psycopg2.connect(DATABASE_URL)
 
 cur = conn.cursor()
-cur.execute('''CREATE TABLE IF NOT EXISTS visitingcard_data(id serial PRIMARY KEY, first_name varchar(255), last_name varchar(255), 
+cur.execute('''CREATE TABLE IF NOT EXISTS visitingcard_data(id serial PRIMARY KEY, first_name varchar(255), last_name varchar(255),
 designation varchar(255), mobile_no INT, email varchar(255), website varchar(255));''')
 
+# cur.execute('''ALTER TABLE visitingcard_data ALTER mobile_no TYPE bigint;''')
+# conn.commit()
+# conn.close()
+# cur.close()
+
 app.secret_key = "my_secret_key"
- 
+
+
 image_folder = "Image"
 upload_folder = "Upload"
 allowed_extension = {'jpeg', 'jpg', 'png', 'pdf'}
@@ -39,11 +46,12 @@ def allowed_type(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extension
 
 
-# @app.route('/', methods=['POST', 'GET'])
-# def home():
-#     return render_template('first_main_page.html')
+@app.route('/', methods=['POST', 'GET'])
+def home():
+    return render_template('main_page.html')
 
 
+# new  /home
 @app.route('/', methods=['POST', 'GET'])
 def homepage():
     if request.method == 'POST':
@@ -130,10 +138,10 @@ def homepage():
                 if upload_list:
                     latest_upload_image = max(upload_list)
                     upload_url = url_for('get_file', filename=latest_upload_image)
-                    return render_template('home.html', upload_url=upload_url)
+                    return render_template('latest_page.html', upload_url=upload_url)
 
     # return render_template('first_main_page.html')
-    return render_template('home.html')
+    return render_template('latest_page.html')
 
 
 @app.route('/image/<filename>')
@@ -232,7 +240,7 @@ def fetch():
 
         print(first_name, last_name, designation, mobile_no, email, website)
         # Render the template with extracted values
-        return render_template('home.html', first_name=first_name, last_name=last_name, designation=designation,
+        return render_template('latest_page.html', first_name=first_name, last_name=last_name, designation=designation,
                                mobile_no=mobile_no, email=email, website=website)
 
     # # Render the template without extracted values if no form submitted or GET request
@@ -255,9 +263,13 @@ def save():
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         designation = request.form['designation']
-        mobile_no =  re.sub(r'\s+', '', request.form['mobile_no'])
+        mobile_no = re.sub(r'\s+', '', request.form['mobile_no'])
         email = request.form['email']
         website = request.form['website']
+
+        # Check if any of the required fields are empty
+        if not first_name and not last_name and not designation and not mobile_no and not email and not website:
+            return render_template('latest_page.html', message="Please Upload Image.")
 
         # Insert the data into the MySQL database
         cursor = conn.cursor()
@@ -266,7 +278,7 @@ def save():
         cursor.execute(add_data, (first_name, last_name, designation, mobile_no, email, website))
         conn.commit()
         # return 'data successfully store'
-        return redirect(url_for('index'))  # Redirect to the fetch route after saving the data
+    return redirect(url_for('index'))  # Redirect to the fetch route after saving the data
 
 
 @app.route('/index', methods=['POST', 'GET'])
