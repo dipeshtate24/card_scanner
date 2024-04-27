@@ -46,9 +46,9 @@ def allowed_type(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extension
 
 
-@app.route('/', methods=['POST', 'GET'])
-def home():
-    return render_template('main_page.html')
+# @app.route('/', methods=['POST', 'GET'])
+# def home():
+#     return render_template('main_page.html')
 
 
 # new  /home
