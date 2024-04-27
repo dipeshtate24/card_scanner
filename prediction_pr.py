@@ -5,11 +5,14 @@ import spacy
 import re
 import string
 import warnings
+import os
 from io import StringIO 
 warnings.filterwarnings('ignore')
 
-# Set the path to the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'  # Adjust the path as necessary
+# Get the Tesseract path from the environment variable
+tesseract_path = os.environ.get(r'C:\Users\Dipesh\AppData\Local\Tesseract-OCR')
+# Set the Tesseract path for Pytesseract
+pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 # Load NER model
 model_ner = spacy.load("output/model-best/")
