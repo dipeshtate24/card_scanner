@@ -380,6 +380,29 @@ def delete(id):
     flash("remove row from table successfully")
     return redirect(url_for('index'))
 
+#new code
+
+# Route to render the image gallery template
+@app.route('/gallery')
+def image_gallery():
+    # Get a list of all files in the upload folder
+    upload_filenames = os.listdir(upload_folder)
+    # Filter only the image files
+    image_filenames = [filename for filename in upload_filenames if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+    # Create a list of image URLs based on the filenames and the upload folder path
+    uploads_urls = [f"/image/{filename}" for filename in image_filenames]
+    return render_template('gallery.html', uploads_urls=uploads_urls)
+
+
+# Route to handle image deletion
+@app.route('/delete', methods=['POST'])
+def delete_image():
+    filename = request.form['filename']
+    file_path = os.path.join(upload_folder, filename)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    return redirect(url_for('image_gallery'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
