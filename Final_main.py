@@ -141,7 +141,7 @@ def homepage():
                     return render_template('first_page.html', upload_url=upload_url)
 
     # return render_template('first_main_page.html')
-    return render_template('home.html')
+    return render_template('first_page.html')
 
 
 @app.route('/image/<filename>')
