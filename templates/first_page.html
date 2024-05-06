@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Homepage</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 5px;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            width: 100%;
+            display: flex;
+            background: #fcfcfc;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+        }
+        .app-container{
+            display: flex;
+            justify-content: center;
+            align-items:center;
+            flex-direction: column;
+            gap:10px;
+            height: 100%;
+            width:100%;
+        }
+        .Container {
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 {
+            margin-left: 20px;
+        }
+
+        .upload-box {
+            font-size: 12px;
+            background: white;
+            border-radius: 50px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            width: 350px;
+            outline: none;
+        }
+
+        ::-webkit-file-upload-button {
+            color: white;
+            background: #80669d;
+            padding: 10px;
+            border: none;
+            border-radius: 50px;
+            outline: none;
+        }
+
+        ::-webkit-file-upload-button:hover {
+            background: #999;
+        }
+        .submit-button{
+            color: white;
+            background: #80669d;
+            padding: 10px;
+            border: none;
+            border-radius: 50px;
+            width: 100px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            outline: none;
+        }
+        .submit-button:hover {
+            background: #999;
+        }
+        .translate-button{
+            color: white;
+            background: #80669d;
+            padding: 10px;
+            border: none;
+            border-radius: 50px;
+            width: 150px;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            outline: none;
+        }
+        .translate-button:hover {
+            background: #999;
+        }
+        .file_info {
+            font-size:10px;
+            padding: 0px;
+            margin-top: 5px;
+            color: #666;
+        }
+        .input-container {
+            background-color: #66666;
+            width: 400px;
+            object-fit: cover;
+        }
+        .file_name{
+            color: white;
+        }
+        .img-text-container{
+            padding: 10px;
+            width: max-content;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap: 10px;
+        }
+        figure{
+            margin: 0px;
+            padding:0px;
+        }
+        .form{
+            display: flex;
+            align-items:center;
+            gap: 10px;
+        }
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: rgba(0, 0, 0, .2);
+            padding: 28px;
+            margin: 0 28px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+        }
+        .container .title {
+            font-size: 26px;
+            font-weight: 500;
+            text-align: left;
+            padding-bottom: 8px;
+            position: relative;
+        }
+        .container .title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 30px;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+        }
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        .input-box {
+            display: flex;
+            flex-wrap: wrap;
+            width: 45%;
+            padding-bottom: 15px;
+        }
+        .input-box:nth-child(2n) {
+            justify-content: flex-end;
+        }
+        .input-box label{
+            width: 95%;
+            font-weight: 500;
+            margin: 5px 0;
+        }
+        .input-box input {
+            height: 35px;
+            width: 95%;
+            padding: 0 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        .input-box input:focus,
+        .input-box input:valid {
+            box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
+        }
+        .button-container {
+            margin: 10px 0;
+        }
+        .button-container button{
+            float: right;
+            width: 25%;
+            margin-top: 10px;
+            padding: 10px;
+            display: block;
+            font-size: 15px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .button-container:hover {
+            color: rgba(255, 255, 255, 0.7);
+        }
+<!--            .close-btn {-->
+<!--                float: right;-->
+<!--                font-size: 24px;-->
+<!--                color: #fff;-->
+<!--                cursor: pointer;-->
+<!--                transition: color 0.3s;-->
+<!--            }-->
+<!--            .close-btn:hover {-->
+<!--                color: rgba(255, 255, 255, 0.7);-->
+<!--            }-->
+        @media(max-width:600px){
+            .container{
+                min-width: 280px;
+            }
+            .content{
+                max-height: 380px;
+                overflow: auto;
+            }
+            .input-box{
+                margin-bottom: 12px;
+                width: 100%;
+            }
+            .input-box:nth-child(2n) {
+                justify-content: space-between;
+            }
+            .content::-webkit-scrollbar{
+                width: 0;
+            }
+
+        }
+        body {
+            height: 100vh;
+            margin: 0; /* Remove default margin */
+
+            display: grid;
+            grid-template-columns: 70px 1fr;
+            grid-template-rows: 60px 1fr;
+            grid-template-areas:
+                "header header"
+                "sidebar main";
+        }
+        .header {
+            background-color: #fff;
+            grid-area: header;
+            height: 70px;
+        }
+        .sidebar {
+            background-color: #fff;
+            grid-area: sidebar;
+            width: 70px;
+        }
+        .main {
+            background-color: #fcfcfc;
+            grid-area: main;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 60px;
+            width: 100%;
+            display: flex;
+            background: #fff;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+        nav .logo {
+            display: flex;
+            align-items: center;
+            margin: 0 24px;
+        }
+        .logo .menu-icon {
+            color: #333;
+            font-size: 24px;
+            margin-right: 14px;
+            cursor: pointer;
+        }
+        .logo .logo-name {
+            color: #333;
+            font-size: 22px;
+            font-weight: 500;
+        }
+        nav .sidebar-nav {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            height: 100%;
+            width: 260px;
+            padding: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+        nav.open .sidebar-nav {
+            left: 0;
+        }
+        .sidebar-nav .logo {
+            display: flex;
+            align-items: center;
+            margin: 0 24px;
+        }
+        .sidebar-nav .logo .menu-icon {
+            color: #333;
+            font-size: 24px;
+            margin-right: 14px;
+            cursor: pointer;
+        }
+        .sidebar-nav .logo .logo-name {
+            color: #333;
+            font-size: 22px;
+            font-weight: 500;
+        }
+        .sidebar-nav .sidebar-content {
+            padding: 20px 16px;
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar-content .nav-list {
+            list-style: none;
+        }
+        .nav-list .nav-item {
+            list-style: none;
+            width: 100%;
+            height: 50px;
+            margin: 5px 0;
+            line-height: 50px;
+        }
+        .nav-list .nav-item a {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: .4s;
+        }
+        .nav-list .nav-item.active a,
+        .nav-list .nav-item a:hover {
+            background: #999;
+        }
+        .nav-list .nav-item a i {
+            min-width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+        }
+        .nav-list .nav-item a span {
+            min-width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+        }
+        .sidebar-nav-link .i {
+            margin-right: 20px;
+        }
+        a.sidebar-nav-link {
+            display: flex;
+            align-item: center;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 5px;
+            padding: .65rem 1rem;
+        }
+        a.sidebar-nav-link:hover {
+            background: #999;
+        }
+        .sidebar-nav-link .link-name {
+            min-width: 50px;
+<!--            height: 50px;-->
+            line-height: 50px;
+            margin-left: 10px;
+            justify-content: center;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            height: 1000vh;
+            width: 200%;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        nav.open ~ .overlay {
+            opacity: 1;
+            left: 260px;
+            pointer-events: auto;
+        }
+        .sign-button {
+            display: flex;
+            align-items: center;
+            color: black;
+            background: #fcfcfc;
+            padding: 10px;
+            border: 2px solid black;
+            border-radius: 50px;
+            width: 100px;
+            height: 40px;
+            outline: none;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: 10px;
+            border-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        }
+        .sign-button:hover {
+            background: #ADD8E6;
+        }
+        .sign-button .bx {
+            font-size: 24px;
+        }
+        .sidebar {
+            padding: 30px 16px;
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .list .list-item {
+            list-style: none;
+            width: 50%;
+            height: 40px;
+            line-height: 10px;
+            margin: 20px 0;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-right: 10px;
+            padding: 0;
+        }
+        .list .list-item a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: .4s;
+            margin-right: 5px;
+            padding: .65rem 1.5rem;
+            margin-bottom: 5px;
+        }
+        .list .list-item.active a,
+        .list .list-item a:hover {
+            background: #999;
+
+        }
+        .sidebar-link a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: .4s;
+            position: relative;
+            padding: 10px;
+        }
+        a.sidebar-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: .4s;
+            margin-right: 5px;
+            padding: .65rem 1.5rem;
+        }
+        a.sidebar-link:hover {
+            background: #999;
+        }
+        .sidebar-link a {
+            margin-bottom: 5px;
+            text-align: center;
+            padding: 0.45rem 1.7px;
+        }
+        .sidebar-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+<!--        .close-btn {-->
+<!--            position: absolute;-->
+<!--            top:0;-->
+<!--            right: 10px;-->
+<!--            font-size: 30px;-->
+<!--            color: black;-->
+<!--            cursor: pointer;-->
+<!--            z-index: 100;-->
+<!--        }-->
+        .breadcrumbs {
+            padding: 10px;
+            margin-left: 20px;
+        }
+        .breadcrumbs__item {
+            display: inline-block;
+        }
+        .breadcrumbs__item:not(:last-of-type)::after {
+            content: '\203a';
+            margin: 0 5px;
+            color: #cccccc;
+        }
+        .breadcrumbs__link {
+            text-decoration: none;
+            color: ;
+        }
+        .breadcrumbs__link:hover {
+            text-decoration: underline;
+        }
+        .breadcrumbs__link--active {
+            color: blue:
+        }
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+                grid-template-rows: 60px 1fr;
+                grid-template-areas:
+                    "header"
+                    "main";
+            }
+            .sidebar {
+                display: none; /* Hide sidebar on smaller screens */
+            }
+        }
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            .img-text-container {
+               width: 90%; /* Adjust width for smaller screens */
+            }
+        }
+
+        /* Media query for larger screens */
+        @media (min-width: 1200px) {
+            .img-text-container {
+                max-width: 600px; /* Adjust max-width for larger screens */
+            }
+        }
+    </style>
+</head>
+
+<body>
+<header class="header">
+    <nav>
+        <div class="logo">
+            <i class="bx bx-menu menu-icon"></i>
+            <span class="logo-name">CardSnap</span>
+        </div>
+        <button class="sign-button"><i class='bx bx-user-circle bx-small'></i>Sign in</button>
+
+        <div class="sidebar-nav">
+            <div class="logo">
+                <i class="bx bx-menu menu-icon"></i>
+                <span class="logo-name">CardSnap</span>
+            </div>
+            <!--                <span class="close-btn" onclick="hideSidebar()">&times;</span>-->
+            <div class="sidebar-content">
+                <ul class="nav-list">
+                    <li class="nav-item active">
+                        <a href="/">
+                            <i class="material-symbols-outlined icon">home</i>
+                            <span class="link-name">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/index">
+                            <i class="material-symbols-outlined icon">table_view</i>
+                            <span class="link-name">Table</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="material-symbols-outlined icon">perm_media</i>
+                            <span class="link-name">Images</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="sidebar-footer">
+                    <a href="#" class="sidebar-nav-link">
+                        <i class="material-symbols-outlined icon">logout</i>
+                        <span class="link-name">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<section class="sidebar">
+    <ul class="list">
+        <li class="list-item active">
+            <a href="/">
+                <i class="material-symbols-outlined">home</i>
+            </a>
+        </li>
+        <li class="list-item">
+            <a href="/index">
+                <i class="material-symbols-outlined">table_view</i>
+            </a>
+        </li>
+        <li class="list-item">
+            <a href="#">
+                <i class="material-symbols-outlined">perm_media</i>
+            </a>
+        </li>
+    </ul>
+    <div class="sidebar-footer">
+        <a href="#" class="sidebar-link">
+            <i class="material-symbols-outlined">logout</i>
+        </a>
+    </div>
+</section>
+<main class="main">
+    <ul class="breadcrumbs">
+        <li class="breadcrumbs__item">
+            <a href="first_page.html" class="breadcrumbs__link"><i class="fas fa-home"></i></a>
+        </li>
+<!--        <li class="breadcrumbs__item">-->
+<!--            <a href="New.h" class="breadcrumbs__link">Table view</a>-->
+<!--        </li>-->
+<!--        <li class="breadcrumbs__item">-->
+<!--            <a href="" class="breadcrumbs__link">Images</a>-->
+<!--        </li>-->
+    </ul>
+    <div class="app-container">
+    <div class="Container">
+        <div class="input-container">
+            <!--                new action-->
+            <form class="form" method='POST' action='/' enctype="multipart/form-data">
+                <input type="file" class="upload-box" name="image" autocomplete="off" required
+                       accept=" .jpg, .jpeg, .png, .pdf"/>
+                <input type="submit" class="submit-button" value="Upload">
+            </form>
+        </div>
+        <p class="file_info"> only supported jpg, jpeg, png, pdf</p>
+    </div>
+
+    <div class="img-text-container">
+        {% if upload_url %}
+        <div class="mt-5">
+            <figure class="image-container">
+                <img class="image-style" src="{{ upload_url }}" style="width=300px; height:300px;">
+            </figure>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="button-style">
+        <div class="convert_button">
+            <form id="fetchForm" method="post" action='/fetch'
+                  enctype="multipart/form-data">
+                <input id="fetchButton" type="submit" class="translate-button" value="Fetch">
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="title">Person Details</h1>
+        <form action='/save' method="POST">
+            <div class="content">
+                <div class="input-box">
+                    <label for="first_name" class="name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ first_name }}">
+                </div>
+                <div class="input-box">
+                    <label for="last_name" class="name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ last_name }}">
+                </div>
+                <div class="input-box">
+                    <label for="designation" class="name">Designation</label>
+                    <input type="text" id="designation" name="designation" value="{{ designation }}">
+                </div>
+                <div class="input-box">
+                    <label for="mobile_no" class="name">Mobile No.</label>
+                    <input type="text" id="mobile_no" name="mobile_no" value="{{ mobile_no }}">
+                </div>
+                <div class="input-box">
+                    <label for="email" class="name">Email</label>
+                    <input type="text" id="email" name="email" value="{{ email }}">
+                </div>
+                <div class="input-box">
+                    <label for="website" class="name">Website</label>
+                    <input type="text" id="website" name="website" value="{{ website }}">
+                </div>
+            </div>
+            <div class="button-container">
+                {% if message %}
+                <p style="color: red;">{{ message }}</p>
+                {% endif %}
+                <button type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</main>
+<section class="overlay"></section>
+
+<script>
+    const navBar = document.querySelector("nav"),
+      menuBtns = document.querySelectorAll(".menu-icon"),
+      overlay = document.querySelector(".overlay");
+
+    menuBtns.forEach(menuBtn => {
+       menuBtn.addEventListener("click", () => {
+         navBar.classList.toggle("open")
+       });
+    });
+
+    overlay.addEventListener("click", () => {
+        navBar.classList.remove("open")
+    })
+</script>
+
+</body>
+</html>
