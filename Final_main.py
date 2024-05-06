@@ -138,7 +138,7 @@ def homepage():
                 if upload_list:
                     latest_upload_image = max(upload_list)
                     upload_url = url_for('get_file', filename=latest_upload_image)
-                    return render_template('home.html', upload_url=upload_url)
+                    return render_template('first_page.html', upload_url=upload_url)
 
     # return render_template('first_main_page.html')
     return render_template('home.html')
@@ -240,7 +240,7 @@ def fetch():
 
         print(first_name, last_name, designation, mobile_no, email, website)
         # Render the template with extracted values
-        return render_template('home.html', first_name=first_name, last_name=last_name, designation=designation,
+        return render_template('first_page.html', first_name=first_name, last_name=last_name, designation=designation,
                                mobile_no=mobile_no, email=email, website=website)
 
     # # Render the template without extracted values if no form submitted or GET request
@@ -269,7 +269,7 @@ def save():
 
         # Check if any of the required fields are empty
         if not first_name and not last_name and not designation and not mobile_no and not email and not website:
-            return render_template('home.html', message="Please Upload Image.")
+            return render_template('first_page.html', message="Please Upload Image.")
 
         # Insert the data into the MySQL database
         cursor = conn.cursor()
@@ -309,7 +309,7 @@ def index():
     tab = "SELECT * FROM visitingcard_data"
     cur.execute(tab)
     data = cur.fetchall()
-    return render_template('New.html', visitingcard_details=data)
+    return render_template('table.html', visitingcard_details=data)
 
 
 #
