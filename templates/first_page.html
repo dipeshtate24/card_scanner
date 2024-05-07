@@ -548,17 +548,41 @@
                 display: none; /* Hide sidebar on smaller screens */
             }
         }
-        /* Media query for smaller screens */
+                    /* Media Queries */
         @media (max-width: 768px) {
-            .img-text-container {
-               width: 90%; /* Adjust width for smaller screens */
+            .upload-box {
+                width: 100%;
+            }
+            .button-container button {
+                width: 100%;
             }
         }
 
-        /* Media query for larger screens */
-        @media (min-width: 1200px) {
-            .img-text-container {
-                max-width: 600px; /* Adjust max-width for larger screens */
+        @media (max-width: 600px) {
+            .container {
+                min-width: 280px;
+            }
+
+            .content {
+                max-height: 380px;
+                overflow: auto;
+            }
+
+            .input-box {
+                margin-bottom: 12px;
+                width: 100%;
+            }
+
+            .input-box:nth-child(2n) {
+                justify-content: space-between;
+            }
+            .content::-webkit-scrollbar {
+                width: 0;
+            }
+
+            .image-style {
+                max-width: 100%;
+                height: auto;
             }
         }
     </style>
