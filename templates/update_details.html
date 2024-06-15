@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>edit details</title>
+
+</head>
+<body>
+<!--{% with messages = get_flashed_messages() %}-->
+<!--{% if messages %}-->
+<!--{% for message in messages %}-->
+<!--<p>{{ message }}</p>-->
+<!--{% endfor %}-->
+<!--{% endif %}-->
+<!--{% endwith %}-->
+
+{% for row in visitingcard_details %}
+<form action="/update" method="POST">
+    <!-- Add a hidden input field for the id -->
+    <input type="hidden" name="id" value="{{row.0}}">
+    <input type="text" name="first_name" value="{{row.1}}">
+    <input type="text" name="last_name" value="{{row.2}}">
+    <input type="text" name="designation" value="{{row.3}}">
+    <input type="text" name="mobile_no" value="{{row.4}}">
+    <input type="text" name="email" value="{{row.5}}">
+    <input type="text" name="website" value="{{row.6}}">
+    <button type="submit">save</button>
+</form>
+{% endfor %}
+
+</body>
+</html>

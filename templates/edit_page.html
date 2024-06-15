@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        body {
+            height: 100vh;
+            margin: 0; /* Remove default margin */
+
+            display: grid;
+            grid-template-columns: 70px 1fr;
+            grid-template-rows: 60px 1fr;
+            grid-template-areas:
+                "header header"
+                "sidebar main";
+        }
+        .header {
+            background-color: #fff;
+            grid-area: header;
+            height: 70px;
+        }
+        .sidebar {
+            background-color: #fff;
+            grid-area: sidebar;
+            width: 70px;
+        }
+        .main {
+            background-color: #fcfcfc;
+            grid-area: main;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 60px;
+            width: 100%;
+            display: flex;
+            background: #fff;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+        nav .logo {
+            display: flex;
+            align-items: center;
+            margin: 0 24px;
+        }
+        .logo .menu-icon {
+            color: #333;
+            font-size: 24px;
+            margin-right: 14px;
+            cursor: pointer;
+        }
+        .logo .logo-name {
+            color: #333;
+            font-size: 22px;
+            font-weight: 500;
+        }
+        nav .sidebar-nav {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            height: 100%;
+            width: 260px;
+            padding: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+        nav.open .sidebar-nav {
+            left: 0;
+        }
+        .sidebar-nav .logo {
+            display: flex;
+            align-items: center;
+            margin: 0 24px;
+        }
+        .sidebar-nav .logo .menu-icon {
+            color: #333;
+            font-size: 24px;
+            margin-right: 14px;
+            cursor: pointer;
+        }
+        .sidebar-nav .logo .logo-name {
+            color: #333;
+            font-size: 22px;
+            font-weight: 500;
+        }
+        .sidebar-nav .sidebar-content {
+            padding: 20px 16px;
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar-content .nav-list {
+            list-style: none;
+        }
+        .nav-list .nav-item {
+            list-style: none;
+            width: 100%;
+            height: 50px;
+            margin: 5px 0;
+            line-height: 50px;
+        }
+        .nav-list .nav-item a {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: .4s;
+        }
+        .nav-list .nav-item.active a,
+        .nav-list .nav-item a:hover {
+            background: #999;
+        }
+        .nav-list .nav-item a i {
+            min-width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+        }
+        .nav-list .nav-item a span {
+            min-width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+        }
+        .sidebar-nav-link .i {
+            margin-right: 20px;
+        }
+        a.sidebar-nav-link {
+            display: flex;
+            align-item: center;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 5px;
+            padding: .65rem 1rem;
+        }
+        a.sidebar-nav-link:hover {
+            background: #999;
+        }
+        .sidebar-nav-link .link-name {
+            min-width: 50px;
+<!--            height: 50px;-->
+            line-height: 50px;
+            margin-left: 10px;
+            justify-content: center;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            height: 1000vh;
+            width: 200%;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+        }
+        nav.open ~ .overlay {
+            opacity: 1;
+            left: 260px;
+            pointer-events: auto;
+        }
+        .sign-button {
+            display: flex;
+            align-items: center;
+            color: black;
+            background: #fcfcfc;
+            padding: 10px;
+            border: 2px solid black;
+            border-radius: 50px;
+            width: 100px;
+            height: 40px;
+            outline: none;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: 10px;
+            border-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        }
+        .sign-button:hover {
+            background: #ADD8E6;
+        }
+        .sign-button .bx {
+            font-size: 24px;
+        }
+        .sidebar {
+            padding: 30px 16px;
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .list .list-item {
+            list-style: none;
+            width: 50%;
+            height: 40px;
+            line-height: 10px;
+            margin: 20px 0;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-right: 10px;
+            padding: 0;
+        }
+        .list .list-item a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: .4s;
+            margin-right: 5px;
+            padding: .65rem 1.5rem;
+            margin-bottom: 5px;
+        }
+        .list .list-item.active a,
+        .list .list-item a:hover {
+            background: #999;
+
+        }
+        .sidebar-link a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: .4s;
+            position: relative;
+            padding: 10px;
+        }
+        a.sidebar-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: .4s;
+            margin-right: 5px;
+            padding: .65rem 1.5rem;
+        }
+        a.sidebar-link:hover {
+            background: #999;
+        }
+        .sidebar-link a {
+            margin-bottom: 5px;
+            text-align: center;
+            padding: 0.45rem 1.7px;
+        }
+        .sidebar-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+<!--        .close-btn {-->
+<!--            position: absolute;-->
+<!--            top:0;-->
+<!--            right: 10px;-->
+<!--            font-size: 30px;-->
+<!--            color: black;-->
+<!--            cursor: pointer;-->
+<!--            z-index: 100;-->
+<!--        }-->
+        .breadcrumbs {
+            padding: 10px;
+            margin-left: 20px;
+        }
+        .breadcrumbs__item {
+            display: inline-block;
+        }
+        .breadcrumbs__item:not(:last-of-type)::after {
+            content: '\203a';
+            margin: 0 5px;
+            color: #cccccc;
+        }
+        .breadcrumbs__link {
+            text-decoration: none;
+            color: ;
+        }
+        .breadcrumbs__link:hover {
+            text-decoration: underline;
+        }
+        .breadcrumbs__link--active {
+            color: blue:
+        }
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+                grid-template-rows: 60px 1fr;
+                grid-template-areas:
+                    "header"
+                    "main";
+            }
+            .sidebar {
+                display: none; /* Hide sidebar on smaller screens */
+            }
+        }
+        .sub-menu-wrap{
+            position: absolute;
+            top: 80%;
+            right: 5%;
+            width: 320px;
+            max-height: 0px;
+            overflow: hidden;
+            transition: max-height 0.4s all ease;
+
+        }
+        .sub-menu-wrap.open-menu{
+            max-height: 400px;
+        }
+        .sub-menu{
+            background: #fff;
+            padding: 5px;
+            margin: 10px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+            border-radius: 15px;
+            font-family: "Roboto", "Arial", sans-serif;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .user-info h3{
+            font-weight: 500;
+        }
+        .user-info i{
+            font-size: 50px;
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+        .sub-menu hr{
+            border: 0;
+            height: 1px;
+            width: 100%;
+            background: #ccc;
+            margin: 5px 0;
+        }
+        .sub-menu {
+            margin-left: 30px;
+        }
+        .sub-menu-link{
+            display: flex;
+            align: items: center;
+            text-decoration: none;
+            color: #525252;
+            margin: 12px 0px;
+            margin-left: 10px;
+        }
+        .sub-menu-link p{
+           width: 100%;
+           margin-top: 10px;
+        }
+        .sub-menu-link i{
+            width: 40px;
+            background: #e5e5e5;
+            border-radius: 50px;
+            padding: 8px;
+            margin-right: 15px;
+        }
+        .sub-menu-link span {
+            font-size: 22px;
+            transition: transform 0.5s;
+            margin-right: 40px;
+            margin-top: 5px;
+        }
+        .sub-menu-link:hover span {
+            transform: translateX(5px);
+        }
+        .sub-menu-link:hover p{
+            font-weight: 600;
+        }
+        body {
+            background-color: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 5px 5px;
+        }
+        .profile {
+            flex: 1;
+            margin-right: 15px;
+            margin-left: 10px;
+            background-color: #fff;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+            border-radius: 5px;
+            height: 100vh;
+            margin-top: 15px;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+        }
+        .profile-text-container {
+            line-height: 1.2;
+        }
+        .profile-title {
+            font-size: 18px;
+            margin: 0;
+        }
+        .profile-email {
+            color: #768499;
+            font-size: 14px;
+            margin: 5px 0 0;
+        }
+        .menu {
+            margin: 20px;
+        }
+        .menu-link {
+            display: block;
+            text-decoration: none;
+            color: #768499;
+            font-size: 14px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+        .menu-icon {
+            margin-right: 10px;
+        }
+        .menu-link-highlight {
+            color: #fff;
+            background-color: #536dfe;
+        }
+        .menu-link:hover {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        .menu-link-highlight:hover {
+            background-color: #536dfe;
+            color: #fff;
+        }
+        .account {
+            flex: 2;
+            margin-left: 10px;
+            background-color: #fff;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+            border-radius: 5px;
+            height: 250px;
+        }
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #768499;
+        }
+        .account-title {
+            font-size: 20px;
+            color: #1e293b;
+            font-weight: 500;
+            margin: 0;
+        }
+        .btn-container {
+            display: flex;
+            align-items: center;
+        }
+        .btn-cancel, .btn-save {
+            width: 8em;
+            height: 3em;
+            cursor: pointer;
+            border-radius: 2em;
+            font-weight: bold;
+            margin-right: 5px;
+            transition-duration: 0.3s;
+            box-shadow: rgba(0, 0, 0, 0.1);
+        }
+        .btn-cancel {
+            border: 1px solid #768499;
+            color: #1e293b;
+            background-color: #fff;
+        }
+        .btn-cancel:hover {
+            background-color: #f1f5f9;
+        }
+        .btn-save {
+            border: 1px solid #458ff6;
+            color: #fff;
+            background-color: #536dfe;
+        }
+        .btn-save:hover {
+            background-color: #4053c9;
+        }
+        .account-edit {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+        .input-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin: 0 20px;
+        }
+        .input-container label {
+            color: #768499;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .input-container input {
+            border: 1.5px solid #768499;
+            border-radius: 5px;
+            padding: 5px;
+            color: #768499;
+        }
+        .input-container input:focus {
+            outline: none;
+            border-color: #536dfe;
+        }
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between boxes */
+            padding: 15px;
+
+        }
+        .account-box{
+            background-color: #fff; /* Box background color */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 100vh;
+        }
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .profile {
+                margin-bottom: 20px;
+            }
+            .account {
+                margin: 0;
+            }
+            .account-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .account-edit {
+                display: flex;
+                justify-content: space-between;
+                margin: 15px 0;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav>
+            <div class="logo">
+                <i class="bx bx-menu menu-icon"></i>
+                <span class="logo-name">CardSnap</span>
+            </div>
+            <button class="sign-button" onclick="toggleMenu()"><i class='bx bx-user-circle bx-small'></i>Sign in</button>
+            <div class="sub-menu-wrap" id="subMenu">
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <i class='bx bx-user-circle '></i>
+                        <h3><strong>{{session.username}}</strong></h3>
+                    </div>
+                    <hr>
+
+                    <a href="/account" class="sub-menu-link">
+                        <i class="material-symbols-outlined">person_edit</i>
+                        <p>Edit profile</p>
+                        <span> > </span>
+                    </a>
+                    <a href="/settings" class="sub-menu-link">
+                        <i class="material-symbols-outlined">settings</i>
+                        <p>Setting</p>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <i class="material-symbols-outlined">help</i>
+                        <p>Help & Support</p>
+                    </a>
+                    <a href="/logout" class="sub-menu-link">
+                        <i class="material-symbols-outlined icon">logout</i>
+                        <p>logout</p>
+                    </a>
+                </div>
+            </div>
+            <div class="sidebar-nav">
+                <div class="logo">
+                    <i class="bx bx-menu menu-icon"></i>
+                    <span class="logo-name" >CardSnap</span>
+                </div>
+<!--                <span class="close-btn" onclick="hideSidebar()">&times;</span>-->
+                <div class="sidebar-content">
+                    <ul class="nav-list">
+                        <li class="nav-item active">
+                            <a href="/">
+                                <i class="material-symbols-outlined icon">home</i>
+                                <span class="link-name">Home</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/index" >
+                                <i class="material-symbols-outlined icon">table_view</i>
+                                <span class="link-name">Table</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/gallery" >
+                                <i class="material-symbols-outlined icon">perm_media</i>
+                                <span class="link-name">Images</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <section class="sidebar">
+        <ul class="list">
+            <li class="list-item active">
+                <a href="/">
+                    <i class="material-symbols-outlined">home</i>
+                </a>
+            </li>
+            <li class="list-item">
+                <a href="/index">
+                    <i class="material-symbols-outlined">table_view</i>
+                </a>
+            </li>
+            <li class="list-item">
+                <a href="/gallery">
+                    <i class="material-symbols-outlined">perm_media</i>
+                </a>
+            </li>
+        </ul>
+
+    </section>
+
+
+
+    <main class="main">
+        <ul class="breadcrumbs">
+            <li class="breadcrumbs__item">
+                <a href="/" class="breadcrumbs__link"><i class="fas fa-home"></i></a>
+            </li>
+            <li class="breadcrumbs__item">
+                <a href="/index" class="breadcrumbs__link">Table view</a>
+            </li>
+            <li class="breadcrumbs__item">
+                <a href="/gallery" class="breadcrumbs__link">Images</a>
+            </li>
+        </ul>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            <span>{{ message }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="container">
+            <div class="profile">
+                <div class="profile-header">
+                    <div class="profile-text-container">
+                        <h1 class="profile-title"><strong>{{session.username}}</strong></h1>
+                        <p class="profile-email"><strong>{{session.email}}</strong></p>
+                    </div>
+                </div>
+                <div class="menu">
+                    <a href="/account" class="menu-link menu-link-highlight"><i
+                            class="fa-solid fa-circle-user menu-icon"></i>Account</a>
+                    <a href="/settings" class="menu-link"><i class="fa-solid fa-gear menu-icon"></i>Settings</a>
+                    <a href="#" class="menu-link"><i class="fa-solid fa-right-from-bracket menu-icon"></i>Logout</a>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="account-box">
+                    <form class="account" method="post" action="/account_update">
+                        <div class="account-header">
+                            <h1 class="account-title">Account Settings</h1>
+                            <div class="btn-container">
+                                <button type="button" class="btn-cancel">Cancel</button>
+                                <button type="submit" class="btn-save">Save</button>
+                            </div>
+                        </div>
+                        <div class="account-edit">
+                            <div class="input-container">
+                                <label for="user-name">Username</label>
+                                <input type="text" id="user-name" name="username" placeholder="username"
+                                       value="{{ username }}"/>
+                            </div>
+                        </div>
+                        <div class="account-edit">
+                            <div class="input-container">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" placeholder="Email" value="{{ email }}"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <section class="overlay"></section>
+    <script>
+        const navBar = document.querySelector("nav"),
+          menuBtns = document.querySelectorAll(".menu-icon"),
+          overlay = document.querySelector(".overlay");
+
+        menuBtns.forEach(menuBtn => {
+           menuBtn.addEventListener("click", () => {
+             navBar.classList.toggle("open")
+           });
+        });
+
+        overlay.addEventListener("click", () => {
+            navBar.classList.remove("open")
+        })
+    </script>
+    <script>
+        let subMenu = document.getElementById("subMenu");
+        function toggleMenu() {
+            subMenu.classList.toggle("open-menu");
+        }
+    </script>
+
+</body>
+</html>
