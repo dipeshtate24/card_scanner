@@ -14,8 +14,14 @@ warnings.filterwarnings('ignore')
 # # Set the Tesseract path for Pytesseract
 # pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
-pytesseract.pytesseract.tesseract_cmd = "/app/.apt/usr/bin/tesseract"
+# pytesseract.pytesseract.tesseract_cmd = "/app/.apt/usr/bin/tesseract"
 
+# Set the Tesseract executable path
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+
+# Optionally set the TESSDATA_PREFIX from environment variable if required
+tessdata_prefix = os.getenv('TESSDATA_PREFIX', '/usr/share/tesseract-ocr/4.00/tessdata')
+os.environ['TESSDATA_PREFIX'] = tessdata_prefix
 
 # Load NER model
 model_ner = spacy.load("output/model-best/")
