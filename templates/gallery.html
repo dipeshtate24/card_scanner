@@ -507,12 +507,12 @@
                     </div>
                     <hr>
 
-                    <a href="#" class="sub-menu-link">
+                    <a href="/account" class="sub-menu-link">
                         <i class="material-symbols-outlined">person_edit</i>
                         <p>Edit profile</p>
                         <span> > </span>
                     </a>
-                    <a href="#" class="sub-menu-link">
+                    <a href="/settings" class="sub-menu-link">
                         <i class="material-symbols-outlined">settings</i>
                         <p>Setting</p>
                     </a>
@@ -520,7 +520,7 @@
                         <i class="material-symbols-outlined">help</i>
                         <p>Help & Support</p>
                     </a>
-                    <a href="#" class="sub-menu-link">
+                    <a href="/logout" class="sub-menu-link">
                         <i class="material-symbols-outlined icon">logout</i>
                         <p>logout</p>
                     </a>
@@ -535,7 +535,7 @@
                 <div class="sidebar-content">
                     <ul class="nav-list">
                         <li class="nav-item active">
-                            <a href="/">
+                            <a href="/back_to_hompage">
                                 <i class="material-symbols-outlined icon">home</i>
                                 <span class="link-name">Home</span>
                             </a>
@@ -566,7 +566,7 @@
     <section class="sidebar">
         <ul class="list">
             <li class="list-item active">
-                <a href="/">
+                <a href="/back_to_homepage">
                     <i class="material-symbols-outlined">home</i>
                 </a>
             </li>
@@ -581,11 +581,6 @@
                 </a>
             </li>
         </ul>
-        <div class="sidebar-footer">
-            <a href="#" class="sidebar-link">
-                <i class="material-symbols-outlined">logout</i>
-            </a>
-        </div>
     </section>
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
