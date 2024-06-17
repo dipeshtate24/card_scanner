@@ -444,7 +444,7 @@ def delete(id):
 # new code
 # Route to render the image gallery template
 @app.route('/gallery', methods=['GET'])
-@login_required
+# @login_required
 def image_gallery():
     cursor = conn.cursor()
     img_query = "SELECT * FROM data_blobs"
@@ -488,7 +488,7 @@ def image_gallery():
 
 
 @app.route('/delete/<int:file_id>', methods=['POST'])
-@login_required
+# @login_required
 def delete_image(file_id):
     # user = get_current_user()
 
