@@ -90,10 +90,9 @@
             padding: 10px;
             border: none;
             border-radius: 50px;
-            width: 100px; #new width
+            width: 150px;
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
             outline: none;
-            margin-right: 20px; #new margin
         }
         .translate-button:hover {
             background: #999;
@@ -424,25 +423,6 @@
         .sign-button .bx {
             font-size: 24px;
         }
-        ::after,
-        ::before {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        a {
-            text-decoration: none;
-        }
-        li {
-            list-style: none;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        .wrapper {
-            display: flex;
-            position: relative;
-        }
         .sidebar {
             padding: 30px 16px;
             display: flex;
@@ -450,41 +430,87 @@
             flex-direction: column;
             justify-content: space-between;
         }
-        .list {
-            padding: 2rem 0;
-            flex: 1 1 auto;
+        .list .list-item {
+            list-style: none;
+            width: 50%;
+            height: 40px;
+            line-height: 10px;
+            margin: 20px 0;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-right: 10px;
+            padding: 0;
         }
-        .sidebar-link .i{
-             font-size: 1.1rem;
-             margin-right: .75rem;
-             text-align:center;
-        }
-        a.sidebar-link {
+        .list .list-item a {
             display: flex;
-            align-item: center;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
             font-size: 16px;
             color: black;
             text-decoration: none;
-            border-radius: 5px;
-            transition: .5s;
-            margin-top: 5px;
-            padding: .625rem 1.625rem;
-<!--            white-space:nowrap;-->
+            border-radius: 6px;
+            transition: .4s;
+            margin-right: 5px;
+            padding: .65rem 1.5rem;
+            margin-bottom: 5px;
         }
         .list .list-item.active a,
-        a.sidebar-link:hover {
-            background-color: #999;
+        .list .list-item a:hover {
+            background: #999;
+
         }
-        .list-item{
+        .sidebar-link a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: .4s;
             position: relative;
+            padding: 10px;
         }
-        .sidebar-link .link-name{
-            min-width: 50px;
-<!--            height: 50px;-->
-            line-height: 50px;
-            margin-left: 20px;
-            justify-content:center;
+        a.sidebar-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: .4s;
+            margin-right: 5px;
+            padding: .65rem 1.5rem;
         }
+        a.sidebar-link:hover {
+            background: #999;
+        }
+        .sidebar-link a {
+            margin-bottom: 5px;
+            text-align: center;
+            padding: 0.45rem 1.7px;
+        }
+        .sidebar-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+<!--        .close-btn {-->
+<!--            position: absolute;-->
+<!--            top:0;-->
+<!--            right: 10px;-->
+<!--            font-size: 30px;-->
+<!--            color: black;-->
+<!--            cursor: pointer;-->
+<!--            z-index: 100;-->
+<!--        }-->
         .breadcrumbs {
             padding: 10px;
             margin-left: 20px;
@@ -523,9 +549,9 @@
                     /* Media Queries */
         @media (max-width: 768px) {
             .upload-box {
-                width: auto%;
-<!--            new change-->
+                width: 100%;
             }
+            
         }
 
         @media (max-width: 600px) {
@@ -639,44 +665,45 @@
             <i class="bx bx-menu menu-icon"></i>
             <span class="logo-name">CardSnap</span>
         </div>
-        <button class="sign-button" onclick="toggleMenu()"><i class='bx bx-user-circle bx-small'></i>Sign in</button>
-        <div class="sub-menu-wrap" id="subMenu">
-            <div class="sub-menu">
-                <div class="user-info">
-                    <i class='bx bx-user-circle '></i>
-                    <strong>{{session.username}}</strong>
-                </div>
-                <hr>
+<button class="sign-button" onclick="toggleMenu()"><i class='bx bx-user-circle bx-small'></i>Sign in</button>
+            <div class="sub-menu-wrap" id="subMenu">
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <i class='bx bx-user-circle '></i>
+                        <strong>{{session.username}}</strong>
+                    </div>
+                    <hr>
 
-                <a href="/account" class="sub-menu-link">
-                    <i class="material-symbols-outlined">person_edit</i>
-                    <p>Edit profile</p>
-                    <span> > </span>
-                </a>
-                <a href="/settings" class="sub-menu-link">
-                    <i class="material-symbols-outlined">settings</i>
-                    <p>Setting</p>
-                </a>
-                <a href="#" class="sub-menu-link">
-                    <i class="material-symbols-outlined">help</i>
-                    <p>Help & Support</p>
-                </a>
-                <a href="/logout" class="sub-menu-link">
-                    <i class="material-symbols-outlined icon">logout</i>
-                    <p>logout</p>
-                </a>
+                    <a href="/account" class="sub-menu-link">
+                        <i class="material-symbols-outlined">person_edit</i>
+                        <p>Edit profile</p>
+                        <span> > </span>
+                    </a>
+                    <a href="/settings" class="sub-menu-link">
+                        <i class="material-symbols-outlined">settings</i>
+                        <p>Setting</p>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <i class="material-symbols-outlined">help</i>
+                        <p>Help & Support</p>
+                    </a>
+                    <a href="/logout" class="sub-menu-link">
+                        <i class="material-symbols-outlined icon">logout</i>
+                        <p>logout</p>
+                    </a>
+                </div>
             </div>
-        </div>
         <div class="sidebar-nav">
             <div class="logo">
                 <i class="bx bx-menu menu-icon"></i>
                 <span class="logo-name">CardSnap</span>
             </div>
             <!--                <span class="close-btn" onclick="hideSidebar()">&times;</span>-->
+
             <div class="sidebar-content">
                 <ul class="nav-list">
                     <li class="nav-item active">
-                        <a href="/">
+                        <a href="/back_to_homepage">
                             <i class="material-symbols-outlined icon">home</i>
                             <span class="link-name">Home</span>
                         </a>
@@ -694,45 +721,28 @@
                         </a>
                     </li>
                 </ul>
-                <div class="sidebar-footer">
-                    <a href="#" class="sidebar-nav-link">
-                        <i class="material-symbols-outlined icon">logout</i>
-                        <span class="link-name">Logout</span>
-                    </a>
-                </div>
             </div>
         </div>
     </nav>
 </header>
 <section class="sidebar">
-    <div class="container-fluid p-0 d-flex h-100">
-        <div class="wrapper">
-            <aside id="sidebar">
-                <ul class="list">
-                    <li class="list-item active">
-                        <a href="#" class="sidebar-link">
-                            <i class="material-symbols-outlined">home</i>
-                        </a>
-                    </li>
-                    <li class="list-item">
-                        <a href="/" class="sidebar-link">
-                            <i class="material-symbols-outlined">table_view</i>
-                        </a>
-                    </li>
-                    <li class="list-item">
-                        <a href="/index" class="sidebar-link">
-                            <i class="material-symbols-outlined">perm_media</i>
-                        </a>
-                    </li>
-                </ul>
-                <div class="sidebar-footer">
-                    <a href="/gallery" class="sidebar-link">
-                        <i class="material-symbols-outlined">logout</i>
-                    </a>
-                </div>
-            </aside>
-        </div>
-    </div>
+    <ul class="list">
+        <li class="list-item active">
+            <a href="/back_to_homepage">
+                <i class="material-symbols-outlined">home</i>
+            </a>
+        </li>
+        <li class="list-item">
+            <a href="/index">
+                <i class="material-symbols-outlined">table_view</i>
+            </a>
+        </li>
+        <li class="list-item">
+            <a href="/gallery">
+                <i class="material-symbols-outlined">perm_media</i>
+            </a>
+        </li>
+    </ul>
 </section>
 <main class="main">
     <ul class="breadcrumbs">
@@ -820,22 +830,22 @@
 </main>
 <section class="overlay"></section>
 
-<script>
-    const navBar = document.querySelector("nav"),
-      menuBtns = document.querySelectorAll(".menu-icon"),
-      overlay = document.querySelector(".overlay");
+    <script>
+        const navBar = document.querySelector("nav"),
+          menuBtns = document.querySelectorAll(".menu-icon"),
+          overlay = document.querySelector(".overlay");
 
-    menuBtns.forEach(menuBtn => {
-       menuBtn.addEventListener("click", () => {
-         navBar.classList.toggle("open")
-       });
-    });
+        menuBtns.forEach(menuBtn => {
+           menuBtn.addEventListener("click", () => {
+             navBar.classList.toggle("open")
+           });
+        });
 
-    overlay.addEventListener("click", () => {
-        navBar.classList.remove("open")
-    })
-</script>
-<script>
+        overlay.addEventListener("click", () => {
+            navBar.classList.remove("open")
+        })
+    </script>
+    <script>
         let subMenu = document.getElementById("subMenu");
         function toggleMenu() {
             subMenu.classList.toggle("open-menu");
